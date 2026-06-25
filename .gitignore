@@ -1,0 +1,30 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Fichiers locaux secrets — NE JAMAIS COMMITTER
+application-local.properties
+application-local.yml
+*.env
+.env*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Spring Boot
+spring-devtools.properties
