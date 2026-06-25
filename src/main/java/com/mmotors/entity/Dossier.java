@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "dossiers")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Dossier {
 
     @Id
