@@ -21,8 +21,9 @@ API REST développée avec **Spring Boot 3.4 (Java 21)** pour la plateforme M-Mo
 |---|---|
 | Repository Git (backend) | https://github.com/Remicrazy/m-motors-backend |
 | Repository Git (frontend) | https://github.com/Remicrazy/m-motors-frontend |
-| Application déployée | *(URL Railway après déploiement)* |
-| Swagger API docs | `{BASE_URL}/api/docs` |
+| Application frontend | https://m-motors-frontend-nu.vercel.app |
+| API backend | https://m-motors-backend-production.up.railway.app |
+| Swagger API docs | https://m-motors-backend-production.up.railway.app/api/docs |
 | Login admin | admin@mmotors.fr / Admin123! |
 | Login client test | client@test.fr / Client123! |
 
