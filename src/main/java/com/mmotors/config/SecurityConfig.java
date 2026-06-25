@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/vehicles/**").permitAll()
-                        .requestMatchers("/api/docs/**", "/api/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/docs", "/api/docs/**", "/api/api-docs/**",
+                                "/swagger-ui/**", "/swagger-ui.html", "/webjars/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
