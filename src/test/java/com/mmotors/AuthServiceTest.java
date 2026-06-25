@@ -41,7 +41,11 @@ class AuthServiceTest {
         req.setPassword("MotDePasse123!");
 
         when(userRepository.existsByEmail("jean@test.fr")).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
+        when(userRepository.save(any(User.class))).thenAnswer(i -> {
+            User u = i.getArgument(0);
+            u.setId("test-uuid-123");
+            return u;
+        });
         when(jwtService.generateToken(any(), any())).thenReturn("jwt-token");
 
         var response = authService.register(req);
@@ -78,7 +82,11 @@ class AuthServiceTest {
         when(jwtService.generateToken(any(), any())).thenReturn("token");
 
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-        when(userRepository.save(captor.capture())).thenAnswer(i -> i.getArgument(0));
+        when(userRepository.save(captor.capture())).thenAnswer(i -> {
+            User u = i.getArgument(0);
+            u.setId("test-uuid-456");
+            return u;
+        });
 
         authService.register(req);
 
@@ -101,6 +109,7 @@ class AuthServiceTest {
                 .role(User.Role.CLIENT)
                 .build();
 
+        user.setId("test-uuid-789");
         when(userRepository.findByEmail("jean@test.fr")).thenReturn(Optional.of(user));
         when(jwtService.generateToken(any(), any())).thenReturn("jwt-token");
 
