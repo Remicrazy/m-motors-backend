@@ -1,6 +1,5 @@
 package com.mmotors.security;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
+        String uri = request.getRequestURI();
+
         if (header == null || !header.startsWith("Bearer ")) {
+            log.warn("[JWT] Pas de token pour {} {}", request.getMethod(), uri);
             chain.doFilter(request, response);
             return;
         }
@@ -36,6 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         try {
             String email = jwtService.extractSubject(token);
+            log.info("[JWT] Token reçu pour {} {} — email: {}", request.getMethod(), uri, email);
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -44,10 +47,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             userDetails, null, userDetails.getAuthorities());
                     auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(auth);
+                    log.info("[JWT] Auth OK pour {} — rôles: {}", email, userDetails.getAuthorities());
+                } else {
+                    log.warn("[JWT] Token invalide pour {}", email);
                 }
             }
-        } catch (JwtException | UsernameNotFoundException e) {
-            log.debug("Token JWT invalide ou utilisateur introuvable : {}", e.getMessage());
+        } catch (Exception e) {
+            log.error("[JWT] Erreur pour {} {}: {} — {}", request.getMethod(), uri,
+                    e.getClass().getSimpleName(), e.getMessage());
         }
 
         chain.doFilter(request, response);
