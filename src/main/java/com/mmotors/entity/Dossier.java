@@ -1,5 +1,6 @@
 package com.mmotors.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -16,10 +17,12 @@ public class Dossier {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
+    @JsonIgnoreProperties({"dossiers", "password"})
     private User client;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id", nullable = false)
+    @JsonIgnoreProperties({"dossiers", "lldOption"})
     private Vehicle vehicle;
 
     @Enumerated(EnumType.STRING)

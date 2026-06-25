@@ -1,5 +1,6 @@
 package com.mmotors.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -55,6 +56,7 @@ public class Vehicle {
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicle")
     private List<Dossier> dossiers;
 
