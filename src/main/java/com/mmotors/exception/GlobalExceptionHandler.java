@@ -1,5 +1,6 @@
 package com.mmotors.exception;
 
+import io.sentry.Sentry;
 import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -47,5 +48,12 @@ public class GlobalExceptionHandler {
                 .map(e -> e.getField() + " : " + e.getDefaultMessage()).toList();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("message", "Erreur de validation", "errors", errors));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
+        Sentry.captureException(ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "Erreur interne du serveur"));
     }
 }
